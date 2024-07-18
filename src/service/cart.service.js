@@ -1,5 +1,7 @@
 import Cart from '../dao/models/cart.model.js';
 import User from '../dao/models/user.model.js';
+import Ticket from '../dao/models/ticket.model.js';
+import crypto from 'crypto'; // Asegúrate de importar 'crypto'
 
 export const getAllCarts = async () => {
     try {
@@ -65,5 +67,34 @@ export const addProductToUserCart = async (userId, productId, quantity) => {
         return cart;
     } catch (error) {
         throw new Error('Error al agregar el producto al carrito');
+    }    
+};
+
+export const purchaseCart = async (cartId, userId) => {
+    try {
+        const cart = await Cart.findById(cartId).populate('products.productId');
+        if (!cart) {
+            throw new Error('Carrito no encontrado');
+        }
+
+        const totalAmount = cart.products.reduce((acc, item) => acc + (item.productId.price * item.quantity), 0);
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        const ticket = new Ticket({
+            code: crypto.randomBytes(8).toString('hex'),  // Generar código único
+            userId,
+            cartId,
+            totalAmount,
+            purchaser: user.email  // Correo del usuario
+        });
+
+        await ticket.save();
+        return ticket;
+    } catch (error) {
+        console.error('Error en purchaseCart:', error);  // Agrega un log detallado
+        throw new Error('Error al realizar la compra');
     }
 };

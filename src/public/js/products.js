@@ -42,6 +42,10 @@ async function addToCart(productId) {
     }
 }
 
+function finalizePurchase(cartId) {
+    window.location.href = `/cart/${cartId}`;
+}
+
 const filterForm = document.getElementById('filter-form');
 filterForm.addEventListener('submit', (event) => {
     event.preventDefault();

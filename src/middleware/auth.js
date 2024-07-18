@@ -13,3 +13,11 @@ export const isNotAuthenticated = (req, res, next) => {
         res.redirect('/products');
     }
 };
+
+export const isAdmin = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        return next();
+    } else {
+        res.status(403).json({ message: 'Forbidden' });
+    }
+};
