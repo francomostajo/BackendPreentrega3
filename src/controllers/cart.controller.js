@@ -47,7 +47,6 @@ export const purchaseCart = async (req, res) => {
         const ticket = await purchaseCartService(cid, userId);
         res.status(200).json({ success: true, ticket });
     } catch (error) {
-        console.error('Error en purchaseCart:', error);  // Agrega un log detallado
         res.status(500).json({ success: false, message: error.message });
     }
 };

@@ -1,6 +1,7 @@
 import Cart from '../dao/models/cart.model.js';
 import User from '../dao/models/user.model.js';
 import Ticket from '../dao/models/ticket.model.js';
+import { sendPurchaseEmail } from './email.service.js';
 import crypto from 'crypto'; // Asegúrate de importar 'crypto'
 
 export const getAllCarts = async () => {
@@ -92,9 +93,16 @@ export const purchaseCart = async (cartId, userId) => {
         });
 
         await ticket.save();
+        
+        // Enviar correo de compra
+        await sendPurchaseEmail(user, {
+            code: ticket.code,
+            totalAmount,
+            products: cart.products
+        });
+
         return ticket;
     } catch (error) {
-        console.error('Error en purchaseCart:', error);  // Agrega un log detallado
         throw new Error('Error al realizar la compra');
     }
 };
