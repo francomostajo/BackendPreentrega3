@@ -7,7 +7,8 @@ export const registerUser = async (req, res) => {
         const user = await register(req.body);
         res.redirect('/login');
     } catch (error) {
-        res.status(500).send('Error al registrar usuario');
+        console.error('Error al registrar usuario:', error.message); // Log detallado del error
+        res.status(500).send('Error al registrar usuario: ' + error.message);  // Mensaje de error detallado
     }
 };
 

@@ -16,11 +16,13 @@ import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import flash from 'express-flash';
 import { PORT, MONGO_URL } from './config.js';
+import cors from 'cors';
 
 const app = express();
 const httpServer = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const socketServer = new Server(httpServer);
 
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

@@ -13,10 +13,20 @@ const transporter = nodemailer.createTransport({
 
 export const sendPurchaseEmail = async (user, ticket) => {
     const { code, totalAmount, products } = ticket;
-    const productList = products.map(p => `- ${p.productId.title}: ${p.quantity} x ${p.productId.price} = ${p.quantity * p.productId.price}`).join('\n');
-    
+
+    // Verifica si products es un array antes de mapear
+    if (!Array.isArray(products)) {
+        throw new Error('Products is not an array');
+    }
+
+    const productList = products.map(p => {
+        const productTitle = p.productId ? p.productId.title : 'Producto no encontrado';
+        const productPrice = p.productId ? p.productId.price : 0;
+        return `- ${productTitle}: ${p.quantity} x ${productPrice} = ${p.quantity * productPrice}`;
+    }).join('\n');
+
     const mailOptions = {
-        from: 'francomostajo@gmail.com',
+        from: process.env.EMAIL,
         to: user.email,
         subject: 'Compra realizada con éxito',
         text: `

@@ -1,4 +1,6 @@
 import { getAllCarts, createCart, addProductToCart, addProductToUserCart, purchaseCart as purchaseCartService } from '../service/cart.service.js';
+import { createTicket } from '../service/ticket.service.js';
+import { sendPurchaseEmail } from '../service/email.service.js';
 import User from '../dao/models/user.model.js';
 
 export const getCarts = async (req, res) => {
@@ -42,12 +44,24 @@ export const addProductToUser = async (req, res) => {
 
 export const purchaseCart = async (req, res) => {
     try {
-        const { cid } = req.params;
         const userId = req.user._id;
-        const ticket = await purchaseCartService(cid, userId);
-        res.status(200).json({ success: true, ticket });
+        const cartId = req.params.cid;
+
+        if (!userId) {
+            return res.status(400).json({ success: false, message: 'User ID is missing' });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const ticket = await purchaseCartService(cartId, userId);
+
+        res.status(200).json({ success: true, message: 'Purchase completed successfully', ticket });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        console.error('Error purchasing cart:', error); // Asegúrate de loguear el error
+        res.status(500).json({ success: false, message: 'Error purchasing cart: ' + error.message });
     }
 };
 

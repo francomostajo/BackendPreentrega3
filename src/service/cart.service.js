@@ -78,6 +78,10 @@ export const purchaseCart = async (cartId, userId) => {
             throw new Error('Carrito no encontrado');
         }
 
+        if (cart.products.length === 0) {
+            throw new Error('El carrito está vacío');
+        }
+
         const totalAmount = cart.products.reduce((acc, item) => acc + (item.productId.price * item.quantity), 0);
         const user = await User.findById(userId);
         if (!user) {
@@ -85,24 +89,29 @@ export const purchaseCart = async (cartId, userId) => {
         }
 
         const ticket = new Ticket({
-            code: crypto.randomBytes(8).toString('hex'),  // Generar código único
+            code: crypto.randomBytes(8).toString('hex'),
             userId,
             cartId,
+            products: cart.products,
             totalAmount,
-            purchaser: user.email  // Correo del usuario
+            purchaser: user.email
         });
 
         await ticket.save();
-        
-        // Enviar correo de compra
+
         await sendPurchaseEmail(user, {
             code: ticket.code,
             totalAmount,
             products: cart.products
         });
 
+        // Vaciar el carrito
+        cart.products = [];
+        await cart.save();
+
         return ticket;
     } catch (error) {
-        throw new Error('Error al realizar la compra');
+        console.error('Error al realizar la compra:', error);
+        throw new Error('Error al realizar la compra: ' + error.message);
     }
 };
