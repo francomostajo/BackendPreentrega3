@@ -7,7 +7,8 @@ import routesUser from './routes/routesUsers.js';
 import routesMessages from './routes/routesMessages.js';
 import routesView from './routes/routesViews.js';
 import routesAuth from './routes/routesAuth.js';
-import __dirname from './utils.js';
+const mockingRoutes = require('./routes/routesmocking.js');
+import __dirname from './utils/utils.js';
 import { initializeSockets } from './dao/socketManager.js';
 import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
@@ -49,6 +50,7 @@ app.set("view engine", "handlebars");
 
 app.use('/', routesView);
 app.use('/api/sessions', routesAuth);
+app.use('/api', mockingRoutes);
 initializeSockets(socketServer);
 
 mongoose.connect(MONGO_URL)

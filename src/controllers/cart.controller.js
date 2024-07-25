@@ -1,6 +1,4 @@
 import { getAllCarts, createCart, addProductToCart, addProductToUserCart, purchaseCart as purchaseCartService } from '../service/cart.service.js';
-import { createTicket } from '../service/ticket.service.js';
-import { sendPurchaseEmail } from '../service/email.service.js';
 import User from '../dao/models/user.model.js';
 
 export const getCarts = async (req, res) => {
