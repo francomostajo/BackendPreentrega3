@@ -1,5 +1,6 @@
-const express = require('express');
-const { generateMockProducts } = require('../utils/mocking.js');
+import express from 'express';
+import { generateMockProducts } from '../utils/mocking.js';
+
 const router = express.Router();
 
 router.get('/mockingproducts', (req, res) => {
@@ -7,4 +8,4 @@ router.get('/mockingproducts', (req, res) => {
     res.json(products);
 });
 
-module.exports = router;
+export default router;
