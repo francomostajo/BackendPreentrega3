@@ -1,9 +1,10 @@
 import errorDictionary from '../utils/errorDictionary.js';
+import logger from '../utils/logger.js';
 
 function errorHandler(err, req, res, next) {
     if (err) {
-        console.error('Error: ', err.message); // Log detallado del mensaje del error
-        console.error('Stack trace: ', err.stack); // Log de la traza del error
+        logger.error('Error: ', err.message); // Usar logger
+        logger.error('Stack trace: ', err.stack); // Usar logger
 
         const errorResponse = errorDictionary[err.message] || {
             code: 9999,

@@ -1,0 +1,6 @@
+2024-08-06 13:39:05 error: This is an error message
+2024-08-06 13:39:05 fatal: This is a fatal message
+2024-08-06 13:39:05 error: This is a caught error Test error
+2024-08-06 13:41:28 [31merror[39m: [31mThis is an error message[39m
+2024-08-06 13:41:28 [35mfatal[39m: [35mThis is a fatal message[39m
+2024-08-06 13:41:28 [31merror[39m: [31mThis is a caught error Test error[39m
