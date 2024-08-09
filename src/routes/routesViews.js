@@ -90,5 +90,41 @@ router.get('/cart/:cid', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: 'Error al obtener el carrito' });
     }
 });
+// Nueva ruta para la solicitud de restablecimiento de contraseña
+router.get('/request-password-reset', isNotAuthenticated, (req, res) => {
+    res.render('request-password-reset');
+});
+
+// Nueva ruta para el formulario de restablecimiento de contraseña
+router.get('/reset-password/:token', isNotAuthenticated, async (req, res) => {
+    const { token } = req.params;
+
+    // Aquí deberías agregar la lógica para verificar el token
+    // Si el token es válido, renderiza la vista de restablecimiento de contraseña
+    // Si el token no es válido, muestra un mensaje de error o redirige
+
+    try {
+        const user = await UserModel.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } }).lean();
+
+        if (!user) {
+            return res.status(400).render('error', { message: 'El enlace de restablecimiento de contraseña es inválido o ha expirado.' });
+        }
+
+        res.render('reset-password', { token });
+    } catch (error) {
+        console.error('Error al verificar el token de restablecimiento de contraseña:', error);
+        res.status(500).json({ message: 'Error al verificar el token de restablecimiento de contraseña' });
+    }
+});
+
+// Ruta para cerrar sesión
+router.post('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/login');
+    });
+});
 
 export default router;

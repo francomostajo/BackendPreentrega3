@@ -4,3 +4,7 @@
 2024-08-06 13:41:28 [31merror[39m: [31mThis is an error message[39m
 2024-08-06 13:41:28 [35mfatal[39m: [35mThis is a fatal message[39m
 2024-08-06 13:41:28 [31merror[39m: [31mThis is a caught error Test error[39m
+2024-08-08 21:12:20 [31merror[39m: [31mError: [39m
+2024-08-08 21:12:20 [31merror[39m: [31mStack trace: [39m
+2024-08-08 21:13:31 [31merror[39m: [31mError: [39m
+2024-08-08 21:13:31 [31merror[39m: [31mStack trace: [39m

@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import UserModel from '../dao/models/user.model.js';
+import { sendPasswordResetEmail } from './email.service.js';
 import {
     findUserByEmail,
     createUser
 } from '../dao/data/userDao.js';
-import UserModel from '../dao/models/user.model.js';
 
 export const register = async (userData) => {
     const { first_name, last_name, email, age, password } = userData;
@@ -39,4 +41,44 @@ export const authenticateUser = async (email, password) => {
         throw new Error('Contraseña incorrecta');
     }
     return user;
+};
+
+export const requestPasswordReset = async (email, host) => {
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+        throw new Error('No se encontró ninguna cuenta con ese correo electrónico.');
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+    await user.save();
+
+    const resetUrl = `http://${host}/reset-password/${token}`;
+    await sendPasswordResetEmail(user, resetUrl);
+};
+
+export const resetPasswordService = async (token, newPassword) => {
+    const user = await UserModel.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+        throw new Error('El token de restablecimiento de contraseña es inválido o ha expirado.');
+    }
+
+    const isSamePassword = await bcrypt.compare(newPassword, user.password);
+    if (isSamePassword) {
+        throw new Error('No puedes usar la misma contraseña anterior.');
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
 };

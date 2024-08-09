@@ -46,3 +46,30 @@ export const sendPurchaseEmail = async (user, ticket) => {
         console.error('Error al enviar correo:', error);
     }
 };
+
+export const sendPasswordResetEmail = async (user, resetUrl) => {
+    const mailOptions = {
+        from: process.env.EMAIL,
+        to: user.email,
+        subject: 'Restablecimiento de contraseña',
+        text: `
+            Estimado/a ${user.first_name} ${user.last_name},
+
+            Hemos recibido una solicitud para restablecer tu contraseña. Por favor, haz clic en el siguiente enlace para restablecer tu contraseña:
+
+            ${resetUrl}
+
+            Si no solicitaste este cambio, por favor, ignora este correo.
+
+            Saludos,
+            Equipo de Soporte
+        `
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Correo de restablecimiento de contraseña enviado con éxito');
+    } catch (error) {
+        console.error('Error al enviar correo de restablecimiento de contraseña:', error);
+    }
+};
