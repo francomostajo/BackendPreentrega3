@@ -12,11 +12,11 @@ import { isAuthenticated } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/products', getProducts);
+router.get('/', getProducts);
 router.get('/categories', getCategories);
-router.get('/products/:pid', getProductById);
+router.get('/:pid', getProductById);
 router.post('/products', isAuthenticated, isAdmin, createProduct);
-router.put('/products/:pid', isAuthenticated, isAdmin, updateProduct);
-router.delete('/products/:pid', isAuthenticated, isAdmin, deleteProduct);
+router.put('/:pid', isAuthenticated, isAdmin, updateProduct);
+router.delete('/:pid', isAuthenticated, isAdmin, deleteProduct);
 
 export default router;

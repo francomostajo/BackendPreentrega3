@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --watch src/app.js"
+    "start": "node --watch src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "mocha test/*.test.js"
   },
   "keywords": [],
   "author": "",
@@ -34,5 +36,10 @@
     "swagger-ui-express": "^5.0.1",
     "uuid": "^10.0.0",
     "winston": "^3.13.1"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.7.3",
+    "supertest": "^7.0.0"
   }
 }

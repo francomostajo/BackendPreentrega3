@@ -16,6 +16,7 @@ import routesView from './routes/routesViews.js';
 import routesAuth from './routes/routesAuth.js';
 import mockingRoutes from './routes/routesMocking.js';
 import loggerTestRoute from './routes/routesLogger.js';
+import routerTest from './routes/routesTest.js';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 
@@ -76,6 +77,7 @@ app.use('/api/sessions', routesAuth);
 app.use('/api', mockingRoutes);
 app.use('/api/loggerTest', loggerTestRoute);
 app.use('/', routesView);
+app.use('/api/test', routerTest);
 
 initializeSockets(socketServer);
 
@@ -85,4 +87,5 @@ mongoose.connect(MONGO_URL)
     .then(() => { logger.info("Conectado a la base de datos") }) // Usar logger
     .catch(error => logger.error("Error en la conexión", error)); // Usar logger
 
+export default app;
 export { socketServer };

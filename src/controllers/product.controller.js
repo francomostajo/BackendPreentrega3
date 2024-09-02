@@ -1,5 +1,7 @@
+import mongoose from 'mongoose';
 import { getProducts as fetchProducts, getCategories as fetchCategories } from '../service/product.service.js'; // Asegúrate de que esta ruta sea correcta
 import createError from 'http-errors';
+import ProductModel from '../dao/models/product.model.js';
 
 export const getProducts = async (req, res, next) => {
     try {
@@ -31,6 +33,10 @@ export const getCategories = async (req, res, next) => {
 export const getProductById = async (req, res, next) => {
     const { pid } = req.params;
     try {
+        if (!mongoose.Types.ObjectId.isValid(pid)) {
+            return next(createError(400, 'Invalid Product ID'));
+        }
+
         const product = await ProductModel.findById(pid).lean();
         if (!product) {
             return next(createError(404, 'PRODUCT_NOT_FOUND'));
