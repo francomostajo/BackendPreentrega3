@@ -55,7 +55,7 @@ app.use(express.json());
 app.use(session({
     secret: 'secretkey',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: MONGO_URL }),
 }));
 

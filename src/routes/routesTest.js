@@ -1,22 +1,22 @@
 import express from 'express';
 import {
-    registerUser,
-    loginUser,
-    getCurrentUser,
-    requestPasswordResetController,
-    resetPassword
-} from '../controllers/auth.controller.js';
+    createUser,
+    updateUser,
+    deleteUser,
+    fetchUserById,
+    fetchAllUsers
+} from '../controllers/user.controller.js';
 import { getCarts, createNewCart, addProduct, purchaseCart } from '../controllers/cart.controller.js';
 import { createProduct, updateProduct, deleteProduct, getProductById, getProducts } from '../controllers/product.controller.js';
 
 const router = express.Router();
 
 // Rutas de prueba para usuarios
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.get('/current', getCurrentUser);
-router.post('/request-password-reset', requestPasswordResetController);
-router.post('/reset-password/:token', resetPassword);
+router.post('/register', createUser); // Cambiado a createUser del nuevo controlador
+router.put('/users/:uid', updateUser); // Cambiado a updateUser del nuevo controlador
+router.delete('/users/:uid', deleteUser); // Cambiado a deleteUser del nuevo controlador
+router.get('/users/:id', fetchUserById); // Cambiado a fetchUserById del nuevo controlador
+router.get('/users', fetchAllUsers); // Cambiado a fetchAllUsers del nuevo controlador
 
 // Rutas de prueba para carritos
 router.get('/carts', getCarts);
