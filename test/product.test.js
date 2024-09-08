@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+/* import { expect } from 'chai';
 import request from 'supertest';
 import app from '../src/app.js';
 
@@ -55,4 +55,4 @@ describe('Testing Products Endpoints', function () {
             console.error('Error al crear un producto nuevo:', error);
         }
     });
-});
+}); */

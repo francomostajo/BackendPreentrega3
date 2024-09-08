@@ -19,6 +19,7 @@ router.get('/users/:id', fetchUserById); // Cambiado a fetchUserById del nuevo c
 router.get('/users', fetchAllUsers); // Cambiado a fetchAllUsers del nuevo controlador
 
 // Rutas de prueba para carritos
+
 router.get('/carts', getCarts);
 router.post('/carts', createNewCart);
 router.post('/carts/:cid/product/:pid', addProduct);
