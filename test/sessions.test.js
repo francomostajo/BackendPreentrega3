@@ -1,4 +1,4 @@
-/* import { expect } from 'chai';
+import { expect } from 'chai';
 import request from 'supertest';
 import app from '../src/app.js';
 
@@ -100,4 +100,4 @@ describe('Testing User Endpoints', function () {
             console.error('Error al eliminar el usuario:', error);
         }
     });
-}); */
+});
